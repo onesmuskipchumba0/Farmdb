@@ -1,25 +1,30 @@
 import Image from 'next/image'
 import React from 'react'
-import farmLogo from '../assets/farm-logo.svg' // Import the SVG as a source
+import farmLogo from '../assets/farm-logo.svg'
 
 function Hero() {
   return (
-    <div className='w-full h-[100vh] flex flex-col items-center justify-center bg-green-100'>
-      <div className='flex flex-col items-center'>
-        <Image src={farmLogo} alt='Farm Logo' width={96} height={96} className='mb-4' /> {/* Use next/image for the SVG */}
-        <h1 className='text-4xl font-bold text-green-800 mb-2'>Welcome to FarmDB</h1>
-        <p className='text-lg text-green-600'>Your ultimate crop management solution</p>
-      </div>
-      <div className='w-full h-full mt-4'>
+    <section className='relative w-full min-h-screen'>
+      <div className='absolute inset-0'>
         <Image
-          height={120}
-          width={240}
-          className='w-full h-full object-cover'
-          src={"/home/hero.jpg"}
+          src="/home/hero-2.jpg"
           alt='Hero image'
+          fill
+          sizes="100vw"
+          quality={100}
+          priority
+          style={{
+            objectFit: 'cover',
+          }}
         />
       </div>
-    </div>
+      <div className='absolute inset-0 bg-black/50'></div>
+      <div className='relative z-10 h-full flex flex-col items-center justify-center pt-20'>
+        <Image src={farmLogo} alt='Farm Logo' width={64} height={64} className='mb-4' />
+        <h1 className='text-4xl font-bold text-white mb-2'>Welcome to FarmDB</h1>
+        <p className='text-lg text-white'>Your ultimate crop management solution</p>
+      </div>
+    </section>
   )
 }
 

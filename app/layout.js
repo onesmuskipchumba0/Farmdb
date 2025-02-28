@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* Nav bar */}
-        <nav className="flex flex-row items-start gap-6 pt-6">
+        <nav className="flex flex-row items-start gap-6 pt-6 bg-white shadow-md fixed w-full z-50"> {/* Add background color and shadow */}
           {/* Nav elements >> Logo, Home. About, crop database, Disease AI analysis, account, upgrage  */}
           <div className="flex flex-row items-center justify-start ml-12 mr-auto">
             <Link href={"/"} className="flex flex-row gap-2">
@@ -44,7 +44,9 @@ export default function RootLayout({ children }) {
             <Link href={"/upgrade"}>Upgrade</Link>
           </div>
         </nav>
-        {children}
+        <div className="pt-8"> {/* Add padding to avoid content being hidden behind navbar */}
+          {children}
+        </div>
       </body>
     </html>
   );
