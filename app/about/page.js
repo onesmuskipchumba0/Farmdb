@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import QuickLinks from '@/components/home/QuickLinks'
 
 export default function AboutPage() {
   const features = [
@@ -48,6 +49,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Quick Links Section */}
+      <QuickLinks />
 
       {/* How It Works Section */}
       <section className="py-16 bg-base-200">
