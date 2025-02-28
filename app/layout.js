@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Image from "next/image";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,6 +24,26 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Nav bar */}
+        <nav className="flex flex-row items-start gap-6 pt-6">
+          {/* Nav elements >> Logo, Home. About, crop database, Disease AI analysis, account, upgrage  */}
+          <div className="flex flex-row items-center justify-start ml-12 mr-auto">
+            <Link href={"/"} className="flex flex-row gap-2">
+              <Image width={24} height={24} src="/window.svg" alt="logo"/>
+              <a>FarmDB</a>
+            </Link>
+            
+          </div>
+          {/* Quick links */}
+          <div className="flex flex-row gap-3 mr-auto">
+            <Link href={"/"}>Home</Link>
+            <Link href={"/about"}>About</Link>
+            <Link href={"/cropdb"}>Crop Database</Link>
+            <Link href={"/ai"}>AI analysis</Link>
+            <Link href={"/account"}>Account</Link>
+            <Link href={"/upgrade"}>Upgrade</Link>
+          </div>
+        </nav>
         {children}
       </body>
     </html>
