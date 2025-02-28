@@ -3,7 +3,8 @@ import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
-import farmLogo from "@/components/assets/farm-logo.svg"; // Import the farm logo
+import farmLogo from "@/components/assets/farm-logo.svg";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="light">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <nav className="flex flex-row items-center gap-6 p-6 bg-base-100 shadow-md">
           <div className="flex flex-row items-center justify-start ml-12 mr-auto">
@@ -43,7 +44,10 @@ export default function RootLayout({ children }) {
             <ThemeToggle />
           </div>
         </nav>
-        {children}
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
