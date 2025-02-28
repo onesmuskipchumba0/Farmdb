@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
+import farmLogo from "../components/assets/farm-logo.svg"; // Import the SVG logo
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +30,9 @@ export default function RootLayout({ children }) {
           {/* Nav elements >> Logo, Home. About, crop database, Disease AI analysis, account, upgrage  */}
           <div className="flex flex-row items-center justify-start ml-12 mr-auto">
             <Link href={"/"} className="flex flex-row gap-2">
-              <Image width={24} height={24} src="/window.svg" alt="logo"/>
+              <Image width={24} height={24} src={farmLogo} alt="Farm Logo"/> {/* Use the farm logo */}
               <a>FarmDB</a>
             </Link>
-            
           </div>
           {/* Quick links */}
           <div className="flex flex-row gap-3 mr-auto">
