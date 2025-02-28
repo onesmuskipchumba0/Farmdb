@@ -2,7 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
-import farmLogo from "../components/assets/farm-logo.svg"; // Import the SVG logo
+import ThemeToggle from "@/components/ThemeToggle";
+import farmLogo from "@/components/assets/farm-logo.svg"; // Import the farm logo
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,32 +22,31 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* Nav bar */}
-        <nav className="flex flex-row items-start gap-6 pt-6 bg-white shadow-md fixed w-full z-50"> {/* Add background color and shadow */}
+        <nav className="flex flex-row items-center gap-6 p-6 bg-base-100">
           {/* Nav elements >> Logo, Home. About, crop database, Disease AI analysis, account, upgrage  */}
           <div className="flex flex-row items-center justify-start ml-12 mr-auto">
-            <Link href={"/"} className="flex flex-row gap-2">
-              <Image width={24} height={24} src={farmLogo} alt="Farm Logo"/> {/* Use the farm logo */}
-              <a>FarmDB</a>
+            <Link href={"/"} className="flex flex-row gap-2 items-center">
+              <Image width={32} height={32} src={farmLogo} alt="Farm Logo"/> {/* Updated to use farm logo */}
+              <span className="text-lg font-semibold">FarmDB</span>
             </Link>
           </div>
           {/* Quick links */}
-          <div className="flex flex-row gap-3 mr-auto">
+          <div className="flex flex-row items-center gap-6 mr-12">
             <Link href={"/"}>Home</Link>
             <Link href={"/about"}>About</Link>
             <Link href={"/cropdb"}>Crop Database</Link>
             <Link href={"/ai"}>AI analysis</Link>
             <Link href={"/account"}>Account</Link>
             <Link href={"/upgrade"}>Upgrade</Link>
+            <ThemeToggle />
           </div>
         </nav>
-        <div className="pt-8"> {/* Add padding to avoid content being hidden behind navbar */}
-          {children}
-        </div>
+        {children}
       </body>
     </html>
   );
