@@ -12,7 +12,7 @@ export default function AboutPreview() {
               We're revolutionizing farming with modern technology and data-driven insights.
               Our platform helps farmers make better decisions and improve crop yields.
             </p>
-            <Link href="/about" className="btn btn-primary">
+            <Link href="/about" className="btn btn-primary text-white">
               Learn More About Us
             </Link>
           </div>
