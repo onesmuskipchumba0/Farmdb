@@ -31,7 +31,7 @@ function Hero() {
           <p className='text-xl text-gray-200 max-w-2xl'>
             Your ultimate crop management solution for modern agriculture
           </p>
-          <button className='btn btn-primary bg-green-500 hover:bg-green-600 border-none mt-4'>
+          <button className='btn btn-primary text-white hover:bg-secondary-focus border-none mt-4'>
             Get Started
           </button>
         </div>
