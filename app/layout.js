@@ -26,23 +26,20 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* Nav bar */}
-        <nav className="flex flex-row items-center gap-6 p-6 bg-base-100">
-          {/* Nav elements >> Logo, Home. About, crop database, Disease AI analysis, account, upgrage  */}
+        <nav className="flex flex-row items-center gap-6 p-6 bg-base-100 shadow-md">
           <div className="flex flex-row items-center justify-start ml-12 mr-auto">
             <Link href={"/"} className="flex flex-row gap-2 items-center">
-              <Image width={32} height={32} src={farmLogo} alt="Farm Logo"/> {/* Updated to use farm logo */}
-              <span className="text-lg font-semibold">FarmDB</span>
+              <Image width={32} height={32} src={farmLogo} alt="Farm Logo"/>
+              <span className="text-lg font-bold text-primary">FarmDB</span>
             </Link>
           </div>
-          {/* Quick links */}
           <div className="flex flex-row items-center gap-6 mr-12">
-            <Link href={"/"}>Home</Link>
-            <Link href={"/about"}>About</Link>
-            <Link href={"/cropdb"}>Crop Database</Link>
-            <Link href={"/ai"}>AI analysis</Link>
-            <Link href={"/account"}>Account</Link>
-            <Link href={"/upgrade"}>Upgrade</Link>
+            <Link href={"/"} className="text-neutral hover:text-primary transition-colors">Home</Link>
+            <Link href={"/about"} className="text-neutral hover:text-primary transition-colors">About</Link>
+            <Link href={"/cropdb"} className="text-neutral hover:text-primary transition-colors">Crop Database</Link>
+            <Link href={"/ai"} className="text-neutral hover:text-primary transition-colors">AI analysis</Link>
+            <Link href={"/account"} className="text-neutral hover:text-primary transition-colors">Account</Link>
+            <Link href={"/upgrade"} className="btn btn-secondary btn-sm">Upgrade</Link>
             <ThemeToggle />
           </div>
         </nav>
