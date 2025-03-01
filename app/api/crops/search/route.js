@@ -1,19 +1,34 @@
 import { NextResponse } from 'next/server';
+import connectDB from '@/lib/mongodb';
+import Crop from '@/models/Crop';
 
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const term = searchParams.get('term');
+  try {
+    const { searchParams } = new URL(request.url);
+    const term = searchParams.get('term') || '';
+    const season = searchParams.get('season');
+    const difficulty = searchParams.get('difficulty');
+    const type = searchParams.get('type');
 
-  // Mock data - Replace this with your actual database query
-  const mockCrops = [
-    { id: 1, name: 'Tomato', description: 'Red vegetable/fruit', season: 'Summer' },
-    { id: 2, name: 'Corn', description: 'Tall grain crop', season: 'Summer' },
-    { id: 3, name: 'Lettuce', description: 'Leafy green vegetable', season: 'Spring/Fall' },
-  ];
+    await connectDB();
 
-  const filteredCrops = mockCrops.filter(crop => 
-    crop.name.toLowerCase().includes(term.toLowerCase())
-  );
+    let query = {};
+    
+    if (term) {
+      query.$or = [
+        { name: { $regex: term, $options: 'i' } },
+        { description: { $regex: term, $options: 'i' } }
+      ];
+    }
+    
+    if (season) query.season = season;
+    if (difficulty) query.difficulty = difficulty;
+    if (type) query.type = type;
 
-  return NextResponse.json(filteredCrops);
+    const crops = await Crop.find(query).limit(20);
+    return NextResponse.json(crops);
+  } catch (error) {
+    console.error('Search error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }
