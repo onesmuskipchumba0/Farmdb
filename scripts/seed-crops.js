@@ -35,6 +35,39 @@ const crops = [
     },
     regions: ["Western", "Rift Valley", "Nyanza"]
   },
+  {
+    name: "Beans",
+    scientificName: "Phaseolus vulgaris",
+    description: "Key protein source in Kenyan diets, often intercropped with maize",
+    type: "legume",
+    season: "both short and long rains",
+    difficulty: "easy",
+    growingTime: "70-90 days",
+    imageUrl: "/crops/beans.jpg",
+    commonDiseases: [
+      {
+        name: "Bean Anthracnose",
+        description: "Fungal disease causing seed rot and leaf lesions",
+        symptoms: ["Dark brown lesions", "Sunken spots on pods", "Twisted leaves"],
+        treatment: "Use certified seeds and apply copper-based fungicides",
+        imageUrl: "/diseases/bean-anthracnose.jpg"
+      },
+      {
+        name: "Bean Rust",
+        description: "Airborne fungal infection affecting leaves",
+        symptoms: ["Rust-colored pustules", "Leaf yellowing", "Premature defoliation"],
+        treatment: "Plant resistant varieties and practice field sanitation",
+        imageUrl: "/diseases/bean-rust.jpg"
+      }
+    ],
+    plantingInstructions: {
+      soilType: "Well-drained loam with pH 6.0-6.5",
+      sunlight: "Full sun (6-8 hours daily)",
+      watering: "Moderate, avoid waterlogging",
+      spacing: "45cm between rows, 15cm between plants"
+    },
+    regions: ["Central", "Eastern", "Rift Valley"]
+  },
   // Add more Kenyan crops here...
 ];
 

@@ -12,13 +12,11 @@ export default function Page() {
     type: ''
   });
   const [crops, setCrops] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const searchCrops = async () => {
-    if (!searchTerm && !filters.season && !filters.difficulty && !filters.type) return;
-    
-    setLoading(true);
     try {
+      setLoading(true);
       const queryParams = new URLSearchParams({
         term: searchTerm,
         ...filters
@@ -26,17 +24,43 @@ export default function Page() {
       
       const response = await fetch(`/api/crops/search?${queryParams}`);
       const data = await response.json();
-      setCrops(data);
+      
+      console.log('Received data:', data);
+      
+      if (!Array.isArray(data)) {
+        console.error('Received non-array data:', data);
+        setCrops([]);
+        return;
+      }
+
+      // Filter out invalid crop entries
+      const validCrops = data.filter(crop => 
+        crop && 
+        crop.name && 
+        typeof crop.name === 'string'
+      );
+
+      console.log('Valid crops:', validCrops.map(c => c.name));
+      setCrops(validCrops);
     } catch (error) {
-      console.error('Error fetching crops:', error);
+      console.error('Search error:', error);
+      setCrops([]);
     } finally {
       setLoading(false);
     }
   };
 
+  // Initial load of crops
   useEffect(() => {
     searchCrops();
-  }, [filters]); // Search automatically when filters change
+  }, []); // Empty dependency array for initial load
+
+  // Search when filters change
+  useEffect(() => {
+    if (!loading) { // Prevent double loading on initial render
+      searchCrops();
+    }
+  }, [filters]);
 
   return (
     <div className="container mx-auto p-6">
@@ -63,9 +87,23 @@ export default function Page() {
       <SearchFilters filters={filters} setFilters={setFilters} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {crops.map((crop) => (
-          <CropCard key={crop.id} crop={crop} />
-        ))}
+        {loading ? (
+          <div className="col-span-full text-center py-8">
+            <div className="loading loading-spinner loading-lg"></div>
+            <p className="mt-4">Loading crops...</p>
+          </div>
+        ) : crops.length > 0 ? (
+          crops.map((crop) => (
+            crop?.name ? (
+              <CropCard key={crop._id} crop={crop} />
+            ) : null
+          ))
+        ) : (
+          <div className="col-span-full text-center py-8">
+            <p className="text-xl">No crops found</p>
+            <p className="text-base-content/70 mt-2">Database might be empty. Try running the seed script.</p>
+          </div>
+        )}
       </div>
 
       <DiseaseSection diseases={[

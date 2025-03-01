@@ -27,4 +27,6 @@ const cropSchema = new mongoose.Schema({
   regions: [String], // Kenyan regions where the crop grows well
 });
 
-export default mongoose.models.Crop || mongoose.model('Crop', cropSchema);
+// Single export for ESM compatibility
+const Crop = mongoose.models.Crop || mongoose.model('Crop', cropSchema);
+export default Crop;
