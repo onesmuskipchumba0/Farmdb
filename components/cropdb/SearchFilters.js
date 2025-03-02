@@ -3,18 +3,33 @@ import React, { useState, useEffect } from 'react';
 
 export default function SearchFilters({ filters, setFilters }) {
   const [seasons, setSeasons] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSeasons = async () => {
+    const fetchFilterOptions = async () => {
       try {
-        const response = await fetch('/api/crops/search?getSeasons=true');
-        const data = await response.json();
-        setSeasons(data);
+        setLoading(true);
+        const [seasonsResponse, typesResponse] = await Promise.all([
+          fetch('/api/crops/search?getSeasons=true'),
+          fetch('/api/crops/search?getTypes=true')
+        ]);
+
+        const [seasonsData, typesData] = await Promise.all([
+          seasonsResponse.json(),
+          typesResponse.json()
+        ]);
+
+        setSeasons(seasonsData.sort());
+        setTypes(typesData.sort());
       } catch (error) {
-        console.error('Error fetching seasons:', error);
+        console.error('Error fetching filter options:', error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchSeasons();
+
+    fetchFilterOptions();
   }, []);
 
   return (
@@ -23,6 +38,7 @@ export default function SearchFilters({ filters, setFilters }) {
         className="select select-bordered w-full md:w-auto"
         value={filters.season}
         onChange={(e) => setFilters(prev => ({ ...prev, season: e.target.value }))}
+        disabled={loading}
       >
         <option value="">All Seasons</option>
         {seasons.map((season) => (
@@ -47,13 +63,19 @@ export default function SearchFilters({ filters, setFilters }) {
         className="select select-bordered w-full md:w-auto"
         value={filters.type}
         onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
+        disabled={loading}
       >
         <option value="">All Types</option>
-        <option value="vegetable">Vegetable</option>
-        <option value="fruit">Fruit</option>
-        <option value="herb">Herb</option>
-        <option value="grain">Grain</option>
+        {types.map((type) => (
+          <option key={type} value={type}>
+            {type.charAt(0).toUpperCase() + type.slice(1)}
+          </option>
+        ))}
       </select>
+
+      {loading && (
+        <div className="loading loading-spinner loading-sm"></div>
+      )}
     </div>
   );
 }

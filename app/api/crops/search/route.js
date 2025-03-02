@@ -13,6 +13,12 @@ export async function GET(request) {
       return NextResponse.json(seasons);
     }
 
+    // Get distinct types for dropdown
+    if (searchParams.get('getTypes') === 'true') {
+      const types = await Crop.distinct('type');
+      return NextResponse.json(types);
+    }
+
     // Get distinct diseases for disease section
     if (searchParams.get('getDiseases') === 'true') {
       const crops = await Crop.find({}).lean();
