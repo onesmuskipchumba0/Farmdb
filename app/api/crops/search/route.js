@@ -5,43 +5,56 @@ import Crop from '@/models/Crop';
 export async function GET(request) {
   try {
     await connectDB();
-
-    // First verify database connection by counting documents
-    const count = await Crop.countDocuments();
-    console.log(`Total crops in database: ${count}`);
-
     const { searchParams } = new URL(request.url);
-    let query = {};
+    
+    // Get distinct seasons for dropdown
+    if (searchParams.get('getSeasons') === 'true') {
+      const seasons = await Crop.distinct('season');
+      return NextResponse.json(seasons);
+    }
 
+    // Get distinct diseases for disease section
+    if (searchParams.get('getDiseases') === 'true') {
+      const crops = await Crop.find({}).lean();
+      const diseases = crops.reduce((acc, crop) => {
+        crop.commonDiseases?.forEach(disease => {
+          acc.push({
+            ...disease,
+            affectedCrop: crop.name
+          });
+        });
+        return acc;
+      }, []);
+      return NextResponse.json(diseases);
+    }
+
+    // Regular search functionality
+    let query = {};
     const term = searchParams.get('term') || '';
     const season = searchParams.get('season');
     const difficulty = searchParams.get('difficulty');
     const type = searchParams.get('type');
+    const disease = searchParams.get('disease');
 
     if (term) {
       query.$or = [
         { name: { $regex: term, $options: 'i' } },
-        { description: { $regex: term, $options: 'i' } }
+        { description: { $regex: term, $options: 'i' } },
+        { 'commonDiseases.name': { $regex: term, $options: 'i' } }
       ];
     }
     
     if (season) query.season = season;
     if (difficulty) query.difficulty = difficulty;
     if (type) query.type = type;
+    if (disease) {
+      query['commonDiseases.name'] = { $regex: disease, $options: 'i' };
+    }
 
     const crops = await Crop.find(query).lean();
-    
-    console.log('Query results:', {
-      total: crops.length,
-      names: crops.map(c => c.name)
-    });
-
     return NextResponse.json(crops);
   } catch (error) {
     console.error('Search error:', error);
-    return NextResponse.json({ 
-      error: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined 
-    }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -106,14 +106,7 @@ export default function Page() {
         )}
       </div>
 
-      <DiseaseSection diseases={[
-        {
-          name: "Powdery Mildew",
-          description: "A fungal disease that appears as white powdery spots on leaves",
-          affectedCrops: ["Tomatoes", "Cucumbers", "Squash"]
-        },
-        // Add more diseases as needed
-      ]} />
+      <DiseaseSection />
     </div>
   );
 }

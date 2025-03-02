@@ -1,7 +1,22 @@
-'use client'
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 
 export default function SearchFilters({ filters, setFilters }) {
+  const [seasons, setSeasons] = useState([]);
+
+  useEffect(() => {
+    const fetchSeasons = async () => {
+      try {
+        const response = await fetch('/api/crops/search?getSeasons=true');
+        const data = await response.json();
+        setSeasons(data);
+      } catch (error) {
+        console.error('Error fetching seasons:', error);
+      }
+    };
+    fetchSeasons();
+  }, []);
+
   return (
     <div className="flex flex-wrap gap-4 p-4 bg-base-200 rounded-lg mb-6">
       <select
@@ -10,10 +25,11 @@ export default function SearchFilters({ filters, setFilters }) {
         onChange={(e) => setFilters(prev => ({ ...prev, season: e.target.value }))}
       >
         <option value="">All Seasons</option>
-        <option value="spring">Spring</option>
-        <option value="summer">Summer</option>
-        <option value="fall">Fall</option>
-        <option value="winter">Winter</option>
+        {seasons.map((season) => (
+          <option key={season} value={season}>
+            {season}
+          </option>
+        ))}
       </select>
 
       <select
